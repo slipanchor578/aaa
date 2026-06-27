@@ -1,0 +1,16 @@
+{
+  "plugins": {
+    "mini.nvim": {
+      "rev": "fe1aa97c8c7408f3def6336f7082237e8cf67833",
+      "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "tree-sitter-manager.nvim": {
+      "rev": "ae305699da5e97b6cffdd5cc6f6045b1b0bd26ea",
+      "src": "https://github.com/romus204/tree-sitter-manager.nvim"
+    },
+    "vimdoc-ja": {
+      "rev": "a18f89b47b69b18cd66a97a2aa9de93e86ecfcfb",
+      "src": "https://github.com/vim-jp/vimdoc-ja"
+    }
+  }
+}
