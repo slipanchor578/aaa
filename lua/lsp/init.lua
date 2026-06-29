@@ -19,7 +19,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
   --@param args vim.api.keyset.create_autocmd.callback_args
   callback = function(args)
-    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id)) ---@type vim.lsp.Client
 
     if client:supports_method("textDocument/definition") then
       vim.keymap.set("n", "grd", function()
@@ -34,6 +34,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     if client:supports_method("textDocument/completion") then
+      local chars = {}
+      for i = 32, 126 do
+        table.insert(chars, string.char(i))
+      end
+      client.server_capabilities.completionProvider.triggerCharacters = chars
       vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
     end
 
