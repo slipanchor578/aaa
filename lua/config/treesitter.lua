@@ -1,11 +1,7 @@
 local createAutoCmd = require("config.util").createAutoCmd
 
 require("tree-sitter-manager").setup({
-  auto_install = false,
-  noauto_install = {
-    "c", "lua", "markdown", "markdown_inline", "query", "vim", "vimdoc"
-  },
-
+  auto_install = true,
   createAutoCmd("FileType", {
     pattern = { "gitcommit" },
     callback = function(args)
