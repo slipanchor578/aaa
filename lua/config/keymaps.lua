@@ -59,16 +59,47 @@ kmp.set("i", "<tab>", function()
   return fn.pumvisible() == 1 and keys.cn or keys.ct
 end, { expr = true, desc = "Select next item if popup is visible" })
 
+-- p -> <tab> -> <p></p> が出るver。しかしEmmet のcompletionが表示されなくなっちゃったので
+-- 何となくやめる
+-- kmp.set("i", "<tab>", function()
+--   -- ポップアップが見えている時は次の候補を選択
+--   if fn.pumvisible() == 1 then
+--     return keys.cn
+--   end
+--
+--   -- ポップアップが出ていない時はカーソルの左側の単語を取得
+--   local col = fn.col(".") - 1
+--   local line = fn.getline(".")
+--   local word = fn.matchstr(line:sub(1, col), [[\k*$]])
+--
+--   -- もし英数字などの単語("p" や "div")があれば、それをEmmetとして展開
+--   if word ~= "" then
+--     -- expr = true の関数内では直接実行できないので、vim.scheduleで1フレーム後に実行
+--     vim.schedule(function()
+--       -- カーソル手前の単語を削除してから、Emmentスニペットを展開
+--       local currentCol = fn.col(".")
+--       vim.api.nvim_buf_set_text(0, fn.line(".") - 1, currentCol - 1 - #word, fn.line(".") - 1, currentCol - 1, {})
+--
+--       -- EmmetのHTMLタグとして展開(Neovim標準のスニペット機能を使用)
+--       local snippet = string.format("<%s>$0</%s>", word, word)
+--       vim.snippet.expand(snippet)
+--     end)
+--
+--     -- 文字削除と展開をスケジュールしたので、ここでは何も入力しない
+--     return ""
+--   end
+--
+--   -- 単語がなければ通常のインデントを入れる
+--   return keys.ct
+-- end, { expr = true, desc = "Select next item or expand tag" })
+
 kmp.set("i", "<s-tab>", function()
   -- popup is visible -> previous item
   -- popup is NOT visible -> remove indent
   return fn.pumvisible() == 1 and keys.cp or keys.cd
 end, { expr = true, desc = "Select previous item if popup is visible" })
 
-local ok, pairs = pcall(require, "mini.pairs")
-if not ok then
-  return
-end
+local pairs = require("mini.pairs")
 
 pairs.setup()
 
@@ -81,11 +112,18 @@ kmp.set("i", "<cr>", function()
   local itemSelected = fn.complete_info()["selected"] ~= -1
   if itemSelected then
     -- popup is visible and item is selected -> complete item
+    vim.schedule(function()
+      if vim.snippet.active({ direction = 1 }) then
+        vim.snippet.jump(1)
+      end
+    end)
     return keys.cy
   end
   -- popup is visible but item is NOT selected -> hide popup and insert newline
   return keys.cy .. keys.cr
 end, { expr = true, desc = "Complete current item if item is selected" })
+-- 「p」と入力して「>」を入れると「emmet abbrebiation」と出るのでそのまま「tab」を押して
+-- 選択して「Enter」を押すと「<p></p>」が出る
 
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
