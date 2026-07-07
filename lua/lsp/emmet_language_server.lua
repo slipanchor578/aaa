@@ -1,16 +1,6 @@
-local prefix = vim.env.PREFIX or ""
-local emmetPath
-
-if prefix ~= "" then
-  -- Termux
-  emmetPath = prefix .. "/bin/emmet-language-server"
-else
-  -- Lubuntu
-  emmetPath = "emmet-language-server"
-end
 ---@type vim.lsp.Config
 return {
-  cmd = { emmetPath, "--stdio" },
+  cmd = { "emmet-language-server", "--stdio" },
   filetypes = {
     "astro",
     "css",

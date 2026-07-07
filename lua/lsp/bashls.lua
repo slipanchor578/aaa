@@ -1,16 +1,5 @@
-local prefix = vim.env.PREFIX or ""
-local bashlsPath
-
-if prefix ~= "" then
-  -- Termux
-  bashlsPath = prefix .. "/bin/bash-language-server"
-else
-  -- Lubuntu
-  bashlsPath = "bash-language-server"
-end
-
 return {
-  cmd = { bashlsPath, "start" },
+  cmd = { "bash-language-server", "start" },
   filetypes = { "bash", "sh" },
   root_markers = { ".git" },
   settings = {
