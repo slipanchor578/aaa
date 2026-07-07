@@ -54,10 +54,20 @@ local keys = {
 
 -- select by <tab>/<s-tab>
 kmp.set("i", "<tab>", function()
-  -- popup is visible -> next item
-  -- popup is NOT visible -> add indent
-  return fn.pumvisible() == 1 and keys.cn or keys.ct
-end, { expr = true, desc = "Select next item if popup is visible" })
+  if fn.pumvisible() == 1 then
+    -- ポップアップが出ている時は次の候補
+    return keys.cn
+  elseif vim.snippet.active({ direction = 1 }) then
+    -- スニペットがアクティブで、次にジャンプできる時はジャンプ
+    vim.schedule(function()
+      vim.snippet.jump(1)
+    end)
+    return "" -- キー入力としては何もしない(jumpに任せる)
+  else
+    -- それ以外は通常のインデント追加
+    return keys.ct
+  end
+end, { expr = true, desc = "Select next item or jump snippet" })
 
 -- p -> <tab> -> <p></p> が出るver。しかしEmmet のcompletionが表示されなくなっちゃったので
 -- 何となくやめる
@@ -94,10 +104,20 @@ end, { expr = true, desc = "Select next item if popup is visible" })
 -- end, { expr = true, desc = "Select next item or expand tag" })
 
 kmp.set("i", "<s-tab>", function()
-  -- popup is visible -> previous item
-  -- popup is NOT visible -> remove indent
-  return fn.pumvisible() == 1 and keys.cp or keys.cd
-end, { expr = true, desc = "Select previous item if popup is visible" })
+  if fn.pumvisible() == 1 then
+    -- ポップアップが出ている時は次の候補
+    return keys.cp
+  elseif vim.snippet.active({ direction = -1 }) then
+    -- スニペットがアクティブで、次にジャンプできる時はジャンプ
+    vim.schedule(function()
+      vim.snippet.jump(-1)
+    end)
+    return ""
+  else
+    -- それ以外は通常のインデント追加
+    return keys.cd
+  end
+end, { expr = true, desc = "Select previous item or jump back snippet" })
 
 local pairs = require("mini.pairs")
 
