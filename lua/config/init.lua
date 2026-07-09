@@ -1,7 +1,7 @@
 require("config.noreadplugin")
 require("config.pack")
+require("config.options")
 require("config.treesitter")
 require("config.keymaps")
 require("config.usercommand")
 require("config.diagnostics")
-require("config.options")
