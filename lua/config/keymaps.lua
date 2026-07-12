@@ -21,6 +21,27 @@ opt.scrolloff = 3
 opt.whichwrap = "b,s,h,l,<,>,[,],~"
 
 -- Keymapping
+
+-- vscodeの<C-w>みたいな。今開いているバッファを削除して前のバッファに移る
+kmp.set("n", "<Leader>x", "<Esc>:bprevious<bar>bdelete #<CR>", {
+  silent = true,
+  desc = "delete current buffer and focus previous buffer",
+})
+
+-- 画面下部にterminalを開く
+kmp.set("n", "tt", function()
+  local buf = vim.api.nvim_create_buf(false, true)
+  local lines = vim.o.lines
+  local target = math.floor(lines * 0.3)
+
+  vim.api.nvim_open_win(buf, true, {
+    split = "below",
+    height = target,
+  })
+
+  vim.fn.jobstart(vim.o.shell, { term = true })
+end)
+
 -- 通常コピペしてもカーソルが貼り付けたテキストの末尾に移動しない
 -- このマッピングで移動するようになる。意味は、まずpで貼り付ける
 -- 「`」でNeovimのマーク位置へ移動するコマンドを実行する。「]」で最後に変更、選択したテキストの末尾を指す

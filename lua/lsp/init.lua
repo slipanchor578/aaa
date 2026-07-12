@@ -27,11 +27,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
       end, { buffer = args.buf, desc = "vim.lsp.buf.definition()" })
     end
 
-    if client:supports_method("textDocument/hover") then
-      vim.keymap.set("n", "<leader>k", function()
-        vim.lsp.buf.hover({ border = "single" })
-      end, { buffer = args.buf, desc = "vim.lsp.buf.hover()" })
-    end
+    -- if client:supports_method("textDocument/hover") then
+    --   vim.keymap.set("n", "<leader>k", function()
+    --     vim.lsp.buf.hover({ border = "single" })
+    --   end, { buffer = args.buf, desc = "vim.lsp.buf.hover()" })
+    -- end
 
     if client:supports_method("textDocument/completion") then
       local chars = {}
