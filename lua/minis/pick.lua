@@ -32,13 +32,4 @@ safely("later", function()
   vim.keymap.set("n", "<leader>sg", function()
     grep_with_custom_cwd(pick.builtin.grep_live, "Grep Live")
   end, { desc = "Pick grep live with custom cwd" })
-
-  vim.keymap.set("n", "<space>b", function()
-    local wipeOutCur = function()
-      vim.api.nvim_buf_delete(pick.get_picker_matches().current.bufnr, {})
-    end
-
-    local bufferMappings = { wipeout = { char = "<c-d>", func = wipeOutCur } }
-    pick.builtin.buffers({ include_current = false }, { mappings = bufferMappings })
-  end, { desc = "mini.pick.buffers" })
 end)
