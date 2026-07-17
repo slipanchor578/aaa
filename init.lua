@@ -4,4 +4,3 @@ vim.cmd("colorscheme retrobox")
 require("config")
 require("lsp")
 require("minis")
-

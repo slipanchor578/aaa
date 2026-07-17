@@ -7,3 +7,4 @@ vim.opt.completeopt = { "menu", "menuone", "noselect", "fuzzy", "popup" }
 vim.opt.termguicolors = true
 vim.opt.helplang:prepend("ja")
 vim.g.mapleader = " "
+
