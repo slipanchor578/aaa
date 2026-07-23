@@ -1,6 +1,11 @@
 local miniNotify = require("mini.notify")
 
-miniNotify.setup()
+miniNotify.setup({
+  lsp_progress = {
+    enable = false,
+  },
+})
+
 vim.notify = miniNotify.make_notify({
   ERROR = { duration = 4000 }
 })
